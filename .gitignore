@@ -1,3 +1,4 @@
 .env
 .vscode
 .extensions
+__pycache__/
