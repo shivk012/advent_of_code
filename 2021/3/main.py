@@ -13,18 +13,19 @@ def read_data():
     
     return data
 
-def part_1():
+
+def part_1(data):
     pass
 
 
-def part_2():
+def part_2(data):
     pass
 
 
 def main():
     data = read_data()
-    print(f"{part_1()=}")
-    print(f"{part_2()=}")
+    print(f"{part_1(data)=}")
+    print(f"{part_2(data)=}")
 
 if __name__ == "__main__":
     main()
