@@ -1,6 +1,7 @@
 from collections import Counter
 import os
 import re
+import unittest
 
 
 def read_data():
@@ -82,5 +83,28 @@ def main():
     print(f"{part_2(data)=}")
 
 
+class Test(unittest.TestCase):
+    test_data = """00100
+                11110
+                10110
+                10111
+                10101
+                01111
+                00111
+                11100
+                10000
+                11001
+                00010
+                01010"""
+    test_data = test_data.split("\n")
+
+    def test_1(self):
+        self.assertEqual(part_1(self.test_data), 198)
+
+    def test_2(self):
+        self.assertEqual(part_2(self.test_data), 230)
+
+
 if __name__ == "__main__":
+    unittest.main()
     main()
