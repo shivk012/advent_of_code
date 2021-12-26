@@ -1,6 +1,4 @@
 import os
-import sys
-
 
 def read_data():
     dir = os.path.dirname(os.path.realpath(__file__))
