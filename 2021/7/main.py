@@ -33,9 +33,10 @@ def cost_part_2(step):
 
 def part_2(data):
     # TODO: See if this can be derived rather than calculate all values
+    # See: https://preview.redd.it/k4dnzf9it3481.png?width=1654&format=png&auto=webp&s=e3cc4c4af06ac8840dc521800d6f96032d87ea43
     cost = [
         sum(cost_part_2(abs(position - x)) for x in data)
-        for position in range(1, max(data) + 1)
+        for position in range(0, max(data) + 1)
     ]
 
     return min(cost)
