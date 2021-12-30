@@ -29,7 +29,9 @@ def main():
 
 
 class Test(unittest.TestCase):
-    test_data = ""
+    test_data = '''Player 1 starting position: 4
+Player 2 starting position: 8
+'''
     test_data = test_data.split("\n")
 
     def test_1(self):

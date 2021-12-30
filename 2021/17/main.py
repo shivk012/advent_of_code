@@ -29,7 +29,7 @@ def main():
 
 
 class Test(unittest.TestCase):
-    test_data = ""
+    test_data = '''target area: x=20..30, y=-10..-5'''
     test_data = test_data.split("\n")
 
     def test_1(self):

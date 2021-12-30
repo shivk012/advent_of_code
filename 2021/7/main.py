@@ -29,7 +29,7 @@ def main():
 
 
 class Test(unittest.TestCase):
-    test_data = ""
+    test_data = '''16,1,2,0,4,2,7,1,2,14'''
     test_data = test_data.split("\n")
 
     def test_1(self):

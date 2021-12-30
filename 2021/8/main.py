@@ -29,7 +29,8 @@ def main():
 
 
 class Test(unittest.TestCase):
-    test_data = ""
+    test_data = '''acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab |
+cdfeb fcadb cdfeb cdbaf'''
     test_data = test_data.split("\n")
 
     def test_1(self):

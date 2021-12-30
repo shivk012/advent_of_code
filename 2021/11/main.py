@@ -29,7 +29,17 @@ def main():
 
 
 class Test(unittest.TestCase):
-    test_data = ""
+    test_data = '''5483143223
+2745854711
+5264556173
+6141336146
+6357385478
+4167524645
+2176841721
+6882881134
+4846848554
+5283751526
+'''
     test_data = test_data.split("\n")
 
     def test_1(self):

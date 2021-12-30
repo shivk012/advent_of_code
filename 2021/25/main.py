@@ -29,7 +29,16 @@ def main():
 
 
 class Test(unittest.TestCase):
-    test_data = ""
+    test_data = '''v...>>.vv>
+.vv>>.vv..
+>>.>v>...v
+>>v>>.>.v.
+v>v.vv.v..
+>.>>..v...
+.vv..>.>v.
+v.v..>>v.v
+....v..v.>
+'''
     test_data = test_data.split("\n")
 
     def test_1(self):

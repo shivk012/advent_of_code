@@ -29,7 +29,16 @@ def main():
 
 
 class Test(unittest.TestCase):
-    test_data = ""
+    test_data = '''--- scanner 0 ---
+0,2
+4,1
+3,3
+
+--- scanner 1 ---
+-1,-1
+-5,0
+-2,1
+'''
     test_data = test_data.split("\n")
 
     def test_1(self):

@@ -29,7 +29,9 @@ def main():
 
 
 class Test(unittest.TestCase):
-    test_data = ""
+    test_data = '''inp x
+mul x -1
+'''
     test_data = test_data.split("\n")
 
     def test_1(self):

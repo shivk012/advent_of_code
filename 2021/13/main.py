@@ -29,7 +29,9 @@ def main():
 
 
 class Test(unittest.TestCase):
-    test_data = ""
+    test_data = '''Congratulations on your purchase! To activate this infrared thermal imaging
+camera system, please enter the code found on page 1 of the manual.
+'''
     test_data = test_data.split("\n")
 
     def test_1(self):

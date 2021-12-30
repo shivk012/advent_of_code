@@ -29,7 +29,14 @@ def main():
 
 
 class Test(unittest.TestCase):
-    test_data = ""
+    test_data = '''start-A
+start-b
+A-c
+A-b
+b-d
+A-end
+b-end
+'''
     test_data = test_data.split("\n")
 
     def test_1(self):

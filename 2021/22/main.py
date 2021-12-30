@@ -29,7 +29,11 @@ def main():
 
 
 class Test(unittest.TestCase):
-    test_data = ""
+    test_data = '''on x=10..12,y=10..12,z=10..12
+on x=11..13,y=11..13,z=11..13
+off x=9..11,y=9..11,z=9..11
+on x=10..10,y=10..10,z=10..10
+'''
     test_data = test_data.split("\n")
 
     def test_1(self):
