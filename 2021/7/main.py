@@ -32,7 +32,7 @@ def cost_part_2(step):
 
 
 def part_2(data):
-
+    # TODO: See if this can be derived rather than calculate all values
     cost = [
         sum(cost_part_2(abs(position - x)) for x in data)
         for position in range(1, max(data) + 1)
