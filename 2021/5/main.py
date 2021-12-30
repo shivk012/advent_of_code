@@ -58,14 +58,9 @@ def map_vents(lines):
         y_1 = line[0][1]
         y_2 = line[1][1]
 
-        d_x = x_2 - x_1
-        d_y = y_2 - y_1
-
-        d_x = get_sign(d_x)
-        d_y = get_sign(d_y)
+        d_x, d_y = get_delta(x_1, x_2, y_1, y_2)
 
         x, y = x_1, y_1
-
         while (x, y) != (x_2, y_2):
             grid[y][x] += 1
             x += d_x
@@ -75,13 +70,23 @@ def map_vents(lines):
 
     return grid
 
+def get_delta(x_1, x_2, y_1, y_2):
+    """Get the change needed between coordinates to get to the next one"""
+    d_x = x_2 - x_1
+    d_y = y_2 - y_1
 
-def get_sign(d_x):
-    if d_x < 0:
-        d_x = -1
-    elif d_x > 0:
-        d_x = 1
-    return d_x
+    d_x = get_sign(d_x)
+    d_y = get_sign(d_y)
+    return d_x,d_y
+
+
+def get_sign(delta):
+    """Ensure that only horizontal, vertical or diagonal lines are counted"""
+    if delta < 0:
+        delta = -1
+    elif delta > 0:
+        delta = 1
+    return delta
 
 
 def part_1(data):
