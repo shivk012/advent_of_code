@@ -28,9 +28,9 @@ def create_graph(data):
 def part_1(data):
     graph = create_graph(data)
     visited = set()
-    
+
     def paths(current, visited):
-        if current == 'end':
+        if current == "end":
             return 1
         if current in visited and current.islower():
             return 0
@@ -40,11 +40,30 @@ def part_1(data):
             count += paths(cave, visited)
         return count
 
-    return paths('start', visited)
+    return paths("start", visited)
 
 
 def part_2(data):
-    pass
+    graph = create_graph(data)
+    visited = set()
+
+    def paths(current, visited, single_lower):
+        if current == "end":
+            return 1
+        if current == "start" and visited:
+            return 0
+        if current in visited and current.islower():
+            if single_lower is None:
+                single_lower = current
+            else:
+                return 0
+        visited = visited.union(set([current]))
+        count = 0
+        for cave in graph[current]:
+            count += paths(cave, visited, single_lower)
+        return count
+
+    return paths("start", visited, None)
 
 
 def main():
@@ -67,9 +86,9 @@ b-end"""
         self.assertEqual(part_1(self.test_data), 10)
 
     def test_2(self):
-        self.assertEqual(part_2(self.test_data), 5)
+        self.assertEqual(part_2(self.test_data), 36)
 
 
 if __name__ == "__main__":
-    unittest.main()
-    # main()
+    # unittest.main()
+    main()
