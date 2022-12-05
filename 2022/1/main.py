@@ -1,5 +1,6 @@
 import os
 import unittest
+import itertools
 
 
 def read_data():
@@ -15,16 +16,12 @@ def read_data():
 
 
 def get_total_calories_by_elf(data):
-    output = [0] * (data.count("") + 1)
-    output_index = 0
 
-    for food in data:
-        if not food:
-            output_index += 1
-            continue
-
-        output[output_index] += int(food)
-    return output
+    return [
+        sum(list(map(int, list(food))))
+        for key, food in itertools.groupby(data, lambda y: y == "")
+        if not key
+    ]
 
 
 def part_1(data):
@@ -74,5 +71,5 @@ class Test(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    # unittest.main()
-    main()
+    unittest.main()
+    # main()
