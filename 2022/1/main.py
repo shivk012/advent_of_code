@@ -18,7 +18,7 @@ def read_data():
 def get_total_calories_by_elf(data):
 
     return [
-        sum(list(map(int, list(food))))
+        sum(map(int, list(food)))
         for key, food in itertools.groupby(data, lambda y: y == "")
         if not key
     ]
@@ -71,5 +71,5 @@ class Test(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    unittest.main()
-    # main()
+    # unittest.main()
+    main()
