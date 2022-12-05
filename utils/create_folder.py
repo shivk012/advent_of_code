@@ -14,7 +14,7 @@ SESSION = os.getenv("SESSION")
 
 
 def get_test_input(year, day):
-    """Get the test input for a particular day. Makes a best guess at the test data by looking for 
+    """Get the test input for a particular day. Makes a best guess at the test data by looking for
     the code blocks and ignoring ones with em or span tags"""
 
     url = f"{URL}{year}/day/{day}"
@@ -29,9 +29,7 @@ def get_test_input(year, day):
     if not code_with_no_tag:
         code_with_no_tag = [x for x in all_code if not x.find("span")]
 
-    code = " " if not code_with_no_tag else code_with_no_tag[0].text
-
-    return code
+    return code_with_no_tag[0].text if code_with_no_tag else " "
 
 
 @click.command()
