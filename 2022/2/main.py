@@ -72,7 +72,7 @@ def part_1(data):
                         score += RESULT_SCORES["WIN"]
                     case "Z":
                         score += RESULT_SCORES["LOSS"]
-                score+= PLAY_LOOKUP[chosen]
+                score += PLAY_LOOKUP[chosen]
             case ["B", chosen]:
                 # Opponent chose Paper
                 match chosen:
@@ -82,7 +82,7 @@ def part_1(data):
                         score += RESULT_SCORES["DRAW"]
                     case "Z":
                         score += RESULT_SCORES["WIN"]
-                score+= PLAY_LOOKUP[chosen]
+                score += PLAY_LOOKUP[chosen]
             case ["C", chosen]:
                 # Opponent chose Scissors
                 match chosen:
@@ -92,8 +92,9 @@ def part_1(data):
                         score += RESULT_SCORES["LOSS"]
                     case "Z":
                         score += RESULT_SCORES["DRAW"]
-                score+= PLAY_LOOKUP[chosen]
+                score += PLAY_LOOKUP[chosen]
     return score
+
 
 def part_2(data):
     RESULT_SCORES = {"LOSS": 0, "DRAW": 3, "WIN": 6}
@@ -117,7 +118,7 @@ def part_2(data):
                     case "Z":
                         score += RESULT_SCORES["WIN"]
                         chosen = "Paper"
-                score+= PLAY_LOOKUP[chosen]
+                score += PLAY_LOOKUP[chosen]
             case ["B", outcome]:
                 # Opponent chose Paper
                 match outcome:
@@ -130,7 +131,7 @@ def part_2(data):
                     case "Z":
                         score += RESULT_SCORES["WIN"]
                         chosen = "Scissors"
-                score+= PLAY_LOOKUP[chosen]
+                score += PLAY_LOOKUP[chosen]
             case ["C", outcome]:
                 # Opponent chose Scissors
                 match outcome:
@@ -143,15 +144,76 @@ def part_2(data):
                     case "Z":
                         score += RESULT_SCORES["WIN"]
                         chosen = "Rock"
-                score+= PLAY_LOOKUP[chosen]
+                score += PLAY_LOOKUP[chosen]
     return score
 
+
+def test(data):
+    class Choice:
+        WIN_CONDITION = None
+        LOSS_CONDITION = None
+
+        def get_result(self, opponent):
+            if opponent == self.LOSS_CONDITION:
+                return "WIN"
+            elif opponent == self.WIN_CONDITION:
+                return "LOSS"
+            else:
+                return "DRAW"
+
+        def get_required_move(self, result) -> str:
+            if result == "WIN":
+                return self.LOSS_CONDITION
+            elif result == "LOSS":
+                return self.WIN_CONDITION
+            else:
+                return self.__class__.__name__
+
+        def __repr__(self) -> str:
+            return self.__class__.__name__
+    class Rock(Choice):
+        WIN_CONDITION = "Scissors"
+        LOSS_CONDITION = "Paper"
+
+    class Paper(Choice):
+        WIN_CONDITION = "Rock"
+        LOSS_CONDITION = "Scissors"
+
+    class Scissors(Choice):
+        WIN_CONDITION = "Paper"
+        LOSS_CONDITION = "Rock"
+
+    RESULT_SCORES = {"LOSS": 0, "DRAW": 3, "WIN": 6}
+    PLAY_LOOKUP = {"Rock": 1, "Paper": 2, "Scissors": 3}
+    OPPONENT_LOOKUP = {"A": Rock, "B": Paper, "C": Scissors}
+    PART_1_LOOKUP = {"X": "Rock", "Y": "Paper", "Z": "Scissors"}
+    PART_2_LOOKUP = {"X": "LOSS", "Y": "DRAW", "Z": "WIN"}
+
+    score_part_1 = 0
+    score_part_2 = 0
+
+    for play in data:
+        play = play.replace(" ", "")
+        if not play:
+            continue
+
+        opponent_play = OPPONENT_LOOKUP[play[0]]()
+
+        part_1_result = opponent_play.get_result(PART_1_LOOKUP[play[1]])
+        score_part_1 += RESULT_SCORES[part_1_result]
+        score_part_1 += PLAY_LOOKUP[opponent_play.get_required_move(part_1_result)]
+
+        part_2_result = opponent_play.get_required_move(PART_2_LOOKUP[play[1]])
+        score_part_2 += RESULT_SCORES[PART_2_LOOKUP[play[1]]]
+        score_part_2 += PLAY_LOOKUP[part_2_result]
+
+    return score_part_1, score_part_2
 
 def main():
     data = read_data()
     print(f"{part_1(data)=}")
     print(f"{part_2(data)=}")
-
+    print(f"{test(data)=}")
 
 class Test(unittest.TestCase):
     test_data = """A Y
@@ -161,9 +223,10 @@ C Z"""
 
     def test_1(self):
         self.assertEqual(part_1(self.test_data), 15)
-
+        self.assertEqual(test(self.test_data)[0], 15)
     def test_2(self):
         self.assertEqual(part_2(self.test_data), 12)
+        self.assertEqual(test(self.test_data)[1], 12)
 
 
 if __name__ == "__main__":
