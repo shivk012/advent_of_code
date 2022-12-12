@@ -33,7 +33,7 @@ def part_1(data):
         _, number_of_boxes, _, from_stack, _, to_stack = line.split(" ")
         for _ in range(int(number_of_boxes)):
             stacks[int(to_stack)].appendleft(stacks[int(from_stack)].popleft())
-
+    print(stacks)
     output = ''.join(f"[{' '.join(stack.popleft())}] " for stack in stacks.values())
     return output.replace("[", "").replace("]", "").replace(" ", "")
     
