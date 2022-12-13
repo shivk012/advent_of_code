@@ -27,20 +27,19 @@ def part_1(data):
     rows = [[int(x) for x in row.strip()] for row in data]
     matrix = utils.matrix.LinkedMatrix(rows)
 
-    for row in matrix:
-        for tree in row:
-            if all(tree.value>other_tree for other_tree in tree.below):
-                visible_trees += 1
-                continue
-            if all(tree.value>other_tree for other_tree in tree.above):
-                visible_trees += 1
-                continue
-            if all(tree.value>other_tree for other_tree in tree.right_of):
-                visible_trees += 1
-                continue
-            if all(tree.value>other_tree for other_tree in tree.left_of):
-                visible_trees += 1
-                continue
+    for tree in matrix.iter_nodes():
+        if all(tree.value>other_tree for other_tree in tree.below):
+            visible_trees += 1
+            continue
+        if all(tree.value>other_tree for other_tree in tree.above):
+            visible_trees += 1
+            continue
+        if all(tree.value>other_tree for other_tree in tree.right_of):
+            visible_trees += 1
+            continue
+        if all(tree.value>other_tree for other_tree in tree.left_of):
+            visible_trees += 1
+            continue
     return visible_trees
 
 
@@ -58,15 +57,14 @@ def part_2(data):
     rows = [[int(x) for x in row.strip()] for row in data]
     matrix = utils.matrix.LinkedMatrix(rows)
 
-    for row in matrix:
-        for tree in row:
-            scenic_score = 1
-            scenic_score *= _score_in_line(tree.value, tree.below)
-            scenic_score *= _score_in_line(tree.value, tree.above[::-1])
-            scenic_score *= _score_in_line(tree.value, tree.right_of)
-            scenic_score *= _score_in_line(tree.value, tree.left_of[::-1])
-            if scenic_score > max_score:
-                max_score = scenic_score
+    for tree in matrix.iter_nodes():
+        scenic_score = 1
+        scenic_score *= _score_in_line(tree.value, tree.below)
+        scenic_score *= _score_in_line(tree.value, tree.above[::-1])
+        scenic_score *= _score_in_line(tree.value, tree.right_of)
+        scenic_score *= _score_in_line(tree.value, tree.left_of[::-1])
+        if scenic_score > max_score:
+            max_score = scenic_score
     return max_score
 
 def main():

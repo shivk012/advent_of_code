@@ -149,6 +149,9 @@ class LinkedMatrix:
         except IndexError:
             return None
 
+    def iter_nodes(self):
+        for row in self.nodes:
+            yield from row
+
     def __repr__(self) -> str:
         return f"LinkedMatrix({self.data})"
-
