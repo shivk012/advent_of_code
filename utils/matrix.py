@@ -20,7 +20,42 @@ class FourWayNode:
         self.left = None
         self.right = None
 
-    def get_entire_x(self, direction: DirectionSelector):
+    @property
+    def row(self):
+        return self._get_entire_x(DirectionSelector.row)
+    @property
+    def column(self):
+        return self._get_entire_x(DirectionSelector.column)
+    @property
+    def left_of(self):
+        return self._get_entire_x(DirectionSelector.left)
+    @property
+    def right_of(self):
+        return self._get_entire_x(DirectionSelector.right)
+    @property
+    def above(self):
+        return self._get_entire_x(DirectionSelector.up)
+    @property
+    def below(self):
+        return self._get_entire_x(DirectionSelector.down)
+
+    def set_linked_node(self, node, direction: DirectionSelector):
+        match direction:
+            case DirectionSelector.right:
+                node.left = self
+            case DirectionSelector.left:
+                node.right = self
+            case DirectionSelector.up:
+                node.down = self
+            case DirectionSelector.down:
+                node.up = self
+            case _:
+                raise ValueError("Direction must be one of right, left, up, down")
+
+        setattr(self, direction, node)
+
+
+    def _get_entire_x(self, direction: DirectionSelector):
 
         output = []
 
@@ -92,20 +127,17 @@ class LinkedMatrix:
                 node = FourWayNode(row, column, value)
                 if row > 0:
                     if next_node := self.return_node_or_none(row - 1, column):
-                        node.up = next_node
-                        next_node.down = node
+                        node.set_linked_node(next_node, DirectionSelector.up)
                 if row < len(data) - 1:
                     if next_node := self.return_node_or_none(row + 1, column):
-                        node.down = next_node
-                        next_node.up = node
+                        node.set_linked_node(next_node, DirectionSelector.down)
                 if column > 0:
                     if next_node := self.return_node_or_none(row, column - 1):
-                        node.left = next_node
-                        next_node.right = node
+                        node.set_linked_node(next_node, DirectionSelector.left)
                 if column < len(row_list) - 1:
                     if next_node := self.return_node_or_none(row, column + 1):
-                        node.right = next_node
-                        next_node.left = node
+                        node.set_linked_node(next_node, DirectionSelector.right)
+
                 self.nodes[row].append(node)
 
     def __getitem__(self, x):

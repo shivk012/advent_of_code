@@ -1,5 +1,12 @@
 import os
+import pathlib
 import unittest
+
+utils_path = pathlib.Path(__file__).parent.parent.parent.as_posix()
+import sys
+
+sys.path.append(utils_path)
+import utils
 
 
 def read_data():
@@ -15,28 +22,52 @@ def read_data():
 
 
 def part_1(data):
-
     visible_trees = 0
 
     rows = [[int(x) for x in row.strip()] for row in data]
-    columns = list(zip(*rows))
+    matrix = utils.matrix.LinkedMatrix(rows)
 
-    for i in range(len(rows)):
-        for j in range(len(rows)):
-            tree = rows[i][j]
-            if (
-                all(x < tree for x in rows[i][:j])
-                or all(x < tree for x in rows[i][j + 1 :])
-                or all(x < tree for x in columns[j][:i])
-                or all(x < tree for x in columns[j][i + 1 :])
-            ):
+    for row in matrix:
+        for tree in row:
+            if all(tree.value>other_tree for other_tree in tree.below):
                 visible_trees += 1
-
+                continue
+            if all(tree.value>other_tree for other_tree in tree.above):
+                visible_trees += 1
+                continue
+            if all(tree.value>other_tree for other_tree in tree.right_of):
+                visible_trees += 1
+                continue
+            if all(tree.value>other_tree for other_tree in tree.left_of):
+                visible_trees += 1
+                continue
     return visible_trees
 
-def part_2(data):
-    pass
 
+def part_2(data):
+    def _score_in_line(tree_value, other_trees):
+        score = 0
+        for tree in other_trees:
+            score += 1
+            if tree_value <= tree:
+                break
+        return score
+    
+    max_score = 0
+
+    rows = [[int(x) for x in row.strip()] for row in data]
+    matrix = utils.matrix.LinkedMatrix(rows)
+
+    for row in matrix:
+        for tree in row:
+            scenic_score = 1
+            scenic_score *= _score_in_line(tree.value, tree.below)
+            scenic_score *= _score_in_line(tree.value, tree.above[::-1])
+            scenic_score *= _score_in_line(tree.value, tree.right_of)
+            scenic_score *= _score_in_line(tree.value, tree.left_of[::-1])
+            if scenic_score > max_score:
+                max_score = scenic_score
+    return max_score
 
 def main():
     data = read_data()
@@ -56,7 +87,7 @@ class Test(unittest.TestCase):
         self.assertEqual(part_1(self.test_data), 21)
 
     def test_2(self):
-        self.assertEqual(part_2(self.test_data), 5)
+        self.assertEqual(part_2(self.test_data), 8)
 
 
 if __name__ == "__main__":
