@@ -1,39 +1,58 @@
-
 import os
 import unittest
+
 
 def read_data():
     dir = os.path.dirname(os.path.realpath(__file__))
     input_file = os.path.join(dir, "input.txt")
 
-    with open(input_file, 'r') as f:
+    with open(input_file, "r") as f:
         data = f.readlines()
-        
+
     data = list(map(lambda x: x.strip(), data))
-    
+
     return data
 
 
-def part_1(data):
-    cycles = [1]
-
-    for instruction in data:
-        print(f"cycles_count: {len(cycles)=}")
-        print(instruction)
-        match instruction.split(" "):
-            case ["noop"]: 
-                cycles.append(cycles[-1])
+def calculate_x_values_per_cycle(data) -> list[int]:
+    x_values = [1]
+    for line in data:
+        match line.split():
+            case ["noop"]:
+                x_values.append(x_values[-1])
             case ["addx", x]:
-                cycles.append(cycles[-1])
-                cycles.append(cycles[-1] + int(x))
-        print(cycles)
-    output = 0
-    for x in [20, 60, 100, 140, 180, 220]:
-        print(f"{x=}: {cycles[x]=} {x*cycles[x]=}")
-        output += x*cycles[x]
-    return output
+                x_values.append(x_values[-1])
+                x_values.append(x_values[-1] + int(x))
+    return x_values
+
+
+def part_1(data):
+    x_values = calculate_x_values_per_cycle(data)
+    return (
+        x_values[19] * 20
+        + x_values[59] * 60
+        + x_values[99] * 100
+        + x_values[139] * 140
+        + x_values[179] * 180
+        + x_values[219] * 220
+    )
+
+
 def part_2(data):
-    pass
+    output = ""
+    x_values = calculate_x_values_per_cycle(data)
+    for i, sprite_location in enumerate(x_values[:]):
+        cycle = i
+        if not cycle % 40:
+            output += "\n"
+        if cycle % 40 in (sprite_location - 1, sprite_location, sprite_location + 1):
+            output += "#"
+        else:
+            output += "."
+    print()
+    print()
+    print(output)
+    return output.strip()[:-2]
 
 
 def main():
@@ -43,7 +62,7 @@ def main():
 
 
 class Test(unittest.TestCase):
-    test_data = '''addx 15
+    test_data = """addx 15
 addx -11
 addx 6
 addx -3
@@ -188,7 +207,7 @@ addx -6
 addx -11
 noop
 noop
-noop'''
+noop"""
 
     test_data = test_data.split("\n")
 
@@ -196,8 +215,17 @@ noop'''
         self.assertEqual(part_1(self.test_data), 13140)
 
     def test_2(self):
-        self.assertEqual(part_2(self.test_data), 5)
+        self.assertEqual(
+            part_2(self.test_data),
+            """##..##..##..##..##..##..##..##..##..##..
+###...###...###...###...###...###...###.
+####....####....####....####....####....
+#####.....#####.....#####.....#####.....
+######......######......######......####
+#######.......#######.......#######.....""",
+        )
+
 
 if __name__ == "__main__":
-    unittest.main()
-    #main()
+    # unittest.main()
+    main()
